@@ -26,11 +26,7 @@ import {
   smartFactory,
 } from "../../../../utils/Contracts";
 import { useActiveWeb3React } from "../../../../utils/hooks/useActiveWeb3React";
-import {
-  SMARTSWAPNFTSALES,
-  SMARTSWAPROUTER,
-  WNATIVEADDRESSES,
-} from "../../../../utils/addresses";
+import { SMARTSWAPROUTER, WNATIVEADDRESSES } from "../../../../utils/addresses";
 import {
   ExplorerDataType,
   getExplorerLink,
@@ -93,6 +89,7 @@ export const calculateGas = async (
         : GasPrice
     )
     .quotient.toString();
+    console.log({baseFeeThirtyPercent,percentage},new Percent(percentage.toString(), "100"))
 
   const addPriorityFee = JSBI.add(
     JSBI.BigInt(maxPriorityPerGasFormatted),
@@ -112,6 +109,7 @@ export const calculateGas = async (
   const format1 = ethers.utils.formatUnits(addPriorityFee.toString(), 9);
   const format2 = ethers.utils.formatUnits(maxFee.toString(), 9);
   const format3 = ethers.utils.formatUnits(addGasFee.toString(), 9);
+  console.log({format1, format2, format3})
   return { format1, format2, format3 };
 };
 
@@ -166,7 +164,6 @@ const SendToken = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentToPrice, setCurrentToPrice] = useState("");
   const [showNewChangesText, setShowNewChangesText] = useState(false);
-  // const [one, setOne] = useState([]);
 
   const { onCurrencySelection, onUserInput, onSwitchTokens } =
     useSwapActionHandlers();
@@ -327,7 +324,7 @@ const SendToken = () => {
   };
   // useTokenBalance()
   useEffect(() => {
-    if (!inputError) {
+    if (!inputError && account) {
       checkApproval();
     }
   }, [inputError, formattedAmounts[Field.INPUT], currencies[Field.INPUT]]);
@@ -394,7 +391,7 @@ const SendToken = () => {
           })
         );
       }
-    } catch (e) {
+    } catch (e:any) {
       GFailedTransaction(
         "straight_swap",
         "approval",
@@ -481,8 +478,11 @@ const SendToken = () => {
               : ethers.utils.parseUnits(format3, 9).toString(),
         }
       );
+      console.log({sendTransaction})
       const { confirmations, events } = await sendTransaction.wait(3);
+
       const { hash } = sendTransaction;
+      console.log({confirmations,events,hash})
       const outputAmount = await getOutPutDataFromEvent(
         to,
         events,
@@ -556,9 +556,10 @@ const SendToken = () => {
         library,
         chainId as number
       );
+      console.log({ format1, format2, format3 });
+      console.log(ethers.utils.parseUnits(format1, 9).toString(),ethers.utils.parseUnits(format2, 9).toString(),ethers.utils.parseUnits(format3, 9).toString())
 
       const isEIP1559 = await library?.getFeeData();
-
       const sendTransaction = await route.swapETHForExactTokens(
         parsedOutput(currencies[Field.OUTPUT]?.decimals as number),
         // [from, to],
@@ -583,6 +584,7 @@ const SendToken = () => {
               : ethers.utils.parseUnits(format3, 9).toString(),
         }
       );
+
       const { hash } = sendTransaction;
       const { confirmations, events } = await sendTransaction.wait(3);
 
@@ -682,6 +684,7 @@ const SendToken = () => {
 
       // const format1 = ethers.utils.formatUnits(addPriorityFee.toString(), 9);
       // const format2 = ethers.utils.formatUnits(maxFee.toString(), 9);
+        console.log({pathArray})
 
       const { format1, format2, format3 } = await calculateGas(
         userGasPricePercentage,
@@ -762,7 +765,7 @@ const SendToken = () => {
         );
         onUserInput(Field.INPUT, "");
       }
-    } catch (e) {
+    } catch (e:any) {
       console.log(e?.message);
       GFailedTransaction(
         "straight_swap",

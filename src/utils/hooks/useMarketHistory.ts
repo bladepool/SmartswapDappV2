@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import SmartSwapRouter02 from '../abis/swapAbiForDecoder.json';
 import { timeConverter, getTokenSymbol, formatAmount, APIENDPOINT, APIKEY } from "./useAccountHistory";
-import { AUTOSWAPSTATEADDRESSES, AUTOSWAPV2ADDRESSES, SMARTSWAPROUTER, WNATIVEADDRESSES } from "../addresses";
+import {  MARKETAUTOSWAPADDRESSES, SMARTSWAPROUTER, WNATIVEADDRESSES } from "../addresses";
 import { getERC20Token } from '../utilsFunctions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state';
@@ -52,12 +52,14 @@ const useMarketHistory = (socket:any) => {
         return decoder
     }
     useEffect(() => {
-        if (location.includes("auto-period")) {
-            setLocationData("auto")
-            setContractAddress(AUTOSWAPV2ADDRESSES[chainId as number])
+        if (location.includes("autotrade")) {
+            setLocationData("auto") 
+            let market =location.split("/").length >= 3 ?  location.split("/")[2].charAt(0).toUpperCase() + location.split("/")[2].slice(1) : "Pancakeswap" 
+            setContractAddress(MARKETAUTOSWAPADDRESSES[market][chainId as number])
         } else if (location.includes("set-price")) {
             setLocationData("price")
-            setContractAddress(AUTOSWAPV2ADDRESSES[chainId as number])
+            let market =location.split("/").length >= 3 ?  location.split("/")[2].charAt(0).toUpperCase() + location.split("/")[2].slice(1) : "Pancakeswap" 
+            setContractAddress(MARKETAUTOSWAPADDRESSES[market][chainId as number])
         } else {
             setLocationData("swap")
             setStateAccount(account)
@@ -160,7 +162,7 @@ const useMarketHistory = (socket:any) => {
 
                    
     
-                }else if ( location.includes("auto-period") || location.includes("set-price")){
+                }else if ( location.includes("autotrade") || location.includes("set-price")){
                     const transaction = await getTransactionFromDatabase()
                     if (transaction.length > 0) {
                         let result = []

@@ -9,7 +9,6 @@ import {
   selectMarketFactory,
 } from "./actions";
 import { useActiveWeb3React } from "../../utils/hooks/useActiveWeb3React";
-import { ParsedQs } from "qs";
 import { useCurrency } from "../../hooks/Tokens";
 import { useDispatch, useSelector } from "react-redux";
 import { Currency } from "@uniswap/sdk-core";
@@ -19,11 +18,11 @@ import { isAddress, ParseFloat } from "../../utils";
 import { ethers } from "ethers";
 import { SupportedChainSymbols } from "../../utils/constants/chains";
 import { useSwap } from "../../hooks/useSwap";
-import { ZERO_ADDRESS } from "../../constants";
 import { parseUnits } from "@ethersproject/units";
 import useParsedQueryString from "../../hooks/useParsedQueryString";
 import JSBI from "jsbi";
 import { Web3Provider } from "@ethersproject/providers";
+import { ZERO_ADDRESS } from "../../constants";
 
 export function tryParseAmount<T extends Currency>(
   value?: string,
@@ -202,8 +201,10 @@ export function useDerivedSwapInfo(): {
   if (!inputCurrency || !outputCurrency || !address) {
     inputError = inputError ?? "Select a Token";
   }
-
   if (parseFloat(typedValue) > 0 && pathArray?.length === 0 && !wrap) {
+    inputError = "Insufficient Liquidity for this Trade.";
+  }
+  if (address === ZERO_ADDRESS ) {
     inputError = "Insufficient Liquidity for this Trade.";
   }
 
@@ -256,7 +257,10 @@ function parseCurrencyFromURLParameter(urlParam: any, symbol = ""): string {
   }
   return urlParam ?? "";
 }
-function queryParametersToSwapState(parsedQs: any, chainId: number) {
+function queryParametersToSwapState(
+  parsedQs: any,
+  chainId: number | undefined
+) {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency);
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency);
   const symbol = SupportedChainSymbols[chainId ?? 56];
@@ -295,11 +299,37 @@ export const polygonMarketArray = [
 export const binanceTestMarketArray = [
   { name: "Smartswap", image: "Smartswap.png" },
 ];
+export const AvalancheMarketArray = [
+  { name: "Tradejoe", image: "tradejoe.png" },
+  { name: "Lydia", image: "lydia.png" },
+];
+export const binanceFreeMarketArray = [
+  // { name: "Smartswap", image: "Smartswap.png" },
+  { name: "Pancakeswap", image: "Pancakeswap.png" },
+];
+
+export const polygonTestFreeMarketArray = [
+  { name: "Smartswap", image: "Smartswap.png" },
+  { name: "Quickswap", image: "Quickswap.png" },
+];
+export const polygonFreeMarketArray = [
+  { name: "Quickswap", image: "Quickswap.png" },
+];
+
+export const binanceTestFreeMarketArray = [
+  { name: "Smartswap", image: "Smartswap.png" },
+];
+
+export const AvalancheFreeMarketArray = [
+  { name: "Tradejoe", image: "tradejoe.png" },
+  // { name: "Pangolin", image: "Pangolin.png" },
+
+]
 
 // updates the swap state to use the defaults for a given network
 export function useDefaultsFromURLSearch() {
-  const { chainId, account } = useActiveWeb3React();
-  const [, Symbol] = useNativeBalance();
+  const { account, chainId } = useActiveWeb3React();
+  const ChainId = useSelector((state) => state.chainId.chainId);
   const dispatch = useDispatch<AppDispatch>();
   const parsedQs = useParsedQueryString();
   const [result, setResult] = useState<
@@ -311,8 +341,8 @@ export function useDefaultsFromURLSearch() {
   >();
 
   useEffect(() => {
-    if (!chainId) return;
-    const parsed = queryParametersToSwapState(parsedQs, chainId);
+    if (!ChainId) return;
+    const parsed = queryParametersToSwapState(parsedQs, ChainId);
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
@@ -326,6 +356,6 @@ export function useDefaultsFromURLSearch() {
       inputCurrencyId: parsed[Field.INPUT].currencyId,
       outputCurrencyId: parsed[Field.OUTPUT].currencyId,
     });
-  }, [dispatch, chainId, account]);
+  }, [dispatch, ChainId]);
   return result;
 }

@@ -7,6 +7,7 @@ import {
   MenuList,
   Button,
   useColorModeValue,
+  Tooltip,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useActiveWeb3React } from "../../utils/hooks/useActiveWeb3React";
@@ -21,7 +22,9 @@ export const Nav = ({
   active?: boolean;
 }) => {
   const mobileNavColor = useColorModeValue("#FFFFFF", "#15202B");
+  const { chainId } = useActiveWeb3React();
   return (
+    <Tooltip label={chainId === SupportedChainId.AVALANCHE || chainId=== SupportedChainId.AVALANCHE_FUJI && "coming soon"}  bg="gray.300" color="black">
     <NavLink
       to={to}
       activeStyle={{
@@ -32,13 +35,14 @@ export const Nav = ({
     >
       {label}
     </NavLink>
+    </Tooltip>
   );
 };
 
 function EarnDropdown() {
   const location = useLocation();
 
-  const { chainId } = useActiveWeb3React();
+ 
   const name = location.pathname;
   const { search } = useLocation();
 
@@ -46,7 +50,7 @@ function EarnDropdown() {
     if (name == "/farm" || name == "/pool" || name == "/add") {
       return name === "/add" ? "pool" : name.substring(1).split("-")[0];
     } else {
-      return "Farming";
+      return "Farm";
     }
   };
 
@@ -74,7 +78,7 @@ function EarnDropdown() {
           />
         </MenuItem>
         <MenuItem _focus={{ color: "#319EF6" }}>
-          <Nav label="Farming" to={`/farm${search}`} />
+          <Nav label="Farm" to={`/farm${search}`} />
         </MenuItem>
         <MenuItem _focus={{ color: "#319EF6" }}>
           <Nav label="New LP Farm" to={`/farm/new-farm${search}`} />

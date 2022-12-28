@@ -19,10 +19,12 @@ export const RPC = {
     "https://eth-goerli.alchemyapi.io/v2/Dkk5d02QjttYEoGmhZnJG37rKt8Yl3Im",
   [SupportedChainId.KOVAN]:
     "https://eth-kovan.alchemyapi.io/v2/6OVAa_B_rypWWl9HqtiYK26IRxXiYqER",
-  [SupportedChainId.POLYGON]: `https://rpc-mainnet.matic.network`,
+  [SupportedChainId.POLYGON]: `https://rpc-mainnet.maticvigil.com`,
   [SupportedChainId.POLYGONTEST]: "https://rpc-mumbai.matic.today",
   [SupportedChainId.OASISTEST]: "https://testnet.emerald.oasis.dev",
   [SupportedChainId.OASISMAINNET]: "https://emerald.oasis.dev",
+  [SupportedChainId.AVALANCHE]: "https://api.avax.network/ext/bc/C/rpc",
+  [SupportedChainId.AVALANCHE_FUJI]: "https://api.avax-test.network/ext/bc/C/rpc",
 };
 
 export enum ConnectorNames {
@@ -56,7 +58,7 @@ export function getNetworkLibrary(): Web3Provider {
 export const injected = new InjectedConnector({
   supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
 });
-const supportedChainIds = [3, 4, 56, 97, 80001, 137, 42261, 42262];
+const supportedChainIds = [3, 4, 56, 97, 80001, 137, 42261, 42262, 43114, 43113];
 export const checkSupportedIds = (chainID: number) =>
   supportedChainIds.some((id) => id === chainID);
 export const bscConnector = new BscConnector({

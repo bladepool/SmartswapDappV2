@@ -12,6 +12,7 @@ import {
   Img,
   Divider,
   useColorModeValue,
+  Tooltip,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useActiveWeb3React } from "../../utils/hooks/useActiveWeb3React";
@@ -19,16 +20,18 @@ import Spherium from "../../assets/spherium1.svg";
 import Polygon from "../../assets/Chainpolygon1.svg";
 import Binance from "../../assets/binance1.svg";
 import Router from "../../assets/router1.svg";
+import VectorFire from "../../assets/VectorFIre.svg";
 import { SupportedChainId } from "../../constants/chains";
 
-const Nav = ({ to, label,children }: { to: string; label?: string,children?:React.ReactNode }) => (
+const Nav = ({ to, label,children,img }: { to: string; label?: string,children?:React.ReactNode,img?:any }) => (
   <NavLink
     to={to}
     activeStyle={{
       color: "#319EF6",
     }}
+
   >
-    {label}
+    <Flex justifyContent="space-between">{label} <Img src={img} ml="20px"/></Flex>
     {children}
   </NavLink>
 );
@@ -41,7 +44,7 @@ export function SwapDropdown() {
 
   const useName = () => {
     console.log(name);
-    if (name.includes('swap') || name.includes('auto-period') || name.includes('set-price')) {
+    if (name.includes('swap') || name.includes('autotrade') || name.includes('set-price')) {
       console.log(`Correct name is ${name.split("/")}`);
       return name.split("/")[1];
     } else {
@@ -66,16 +69,19 @@ export function SwapDropdown() {
       </MenuButton>
       <MenuList>
         <MenuItem _focus={{ color: "#319EF6" }}>
-          <Nav label="Straight Swap" to={`/swap${search}`} />
+          <Nav label="Swap" to={`/swap${search}`} />
         </MenuItem>
         <MenuItem _focus={{ color: "#319EF6" }}>
-          <Nav label="Auto-period" to={chainId !== SupportedChainId.BINANCETEST && chainId !== SupportedChainId.BINANCE && chainId !== SupportedChainId.POLYGON  ? '#' : `/auto-period${search}`} />
+          <Nav label="AutoTrade" to={chainId !== SupportedChainId.BINANCETEST && chainId !== SupportedChainId.BINANCE && chainId !== SupportedChainId.POLYGON  && chainId !== SupportedChainId.AVALANCHE && chainId!== SupportedChainId.AVALANCHE_FUJI  ? '#' : `/autotrade${search}`} img={VectorFire}/>
         </MenuItem>
         <MenuItem _focus={{ color: "#319EF6" }}>
-          <Nav label="Set Price" to={chainId !== SupportedChainId.BINANCETEST && chainId !== SupportedChainId.BINANCE && chainId !== SupportedChainId.POLYGON  ? '#' :`/set-price${search}`} />
+          <Nav label="Set Price" to={chainId !== SupportedChainId.BINANCETEST && chainId !== SupportedChainId.BINANCE && chainId !== SupportedChainId.POLYGON && chainId !== SupportedChainId.AVALANCHE && chainId!== SupportedChainId.AVALANCHE_FUJI ? '#' :`/set-price${search}`} />
+        </MenuItem>
+        <MenuItem _focus={{ color: "#319EF6" }}>
+          <Nav label="Freeswap" to={chainId !== SupportedChainId.BINANCETEST && chainId !== SupportedChainId.BINANCE && chainId !== SupportedChainId.POLYGON && chainId !== SupportedChainId.POLYGONTEST && chainId !== SupportedChainId.AVALANCHE && chainId!== SupportedChainId.AVALANCHE_FUJI   ? '#' :`/freeswap${search}`} img={VectorFire}/>
         </MenuItem>
       </MenuList>
-    </Menu>
+    </Menu> 
   );
 }
 
@@ -109,6 +115,7 @@ borderRadius="6px"
 boxSizing="border-box"
 padding="16px 16px 24px 16px"
     background={background}>
+       <Tooltip label={chainId === SupportedChainId.AVALANCHE || chainId=== SupportedChainId.AVALANCHE_FUJI ? "coming soon":""}  bg={chainId === SupportedChainId.AVALANCHE || chainId=== SupportedChainId.AVALANCHE_FUJI ?"gray.300":"transparent"} color="black">
       <MenuItem cursor="pointer" _focus={{ color: "#319EF6" }}
       py="10px"
       _hover={{background:`${bg}`,boxShadow:`${boxShadow}`,borderRadius:"6px"}}
@@ -140,11 +147,13 @@ padding="16px 16px 24px 16px"
      
           </Nav>
       </MenuItem>
+      </Tooltip>
+       <Tooltip label={chainId === SupportedChainId.AVALANCHE || chainId=== SupportedChainId.AVALANCHE_FUJI ? "coming soon" :""}  bg="gray.300" color="black">
       <MenuItem _focus={{ color: "#319EF6" }} mt="20px"
        py="10px"
        _hover={{background:`${bg}`,boxShadow:`${boxShadow}`,borderRadius:"6px"}}
       >
-        <Nav to="/bridge/router">
+        <Nav to={chainId ===43114?"/freeswap":"/bridge/router"}>
           <Flex justifyContent="space-between" w="360px">
   <Flex>
         <Box>
@@ -172,6 +181,7 @@ padding="16px 16px 24px 16px"
      
           </Nav>
       </MenuItem>
+      </Tooltip>
       <Divider background="#DEE6ED" mb="10px" mt="20px"/>
       <MenuItem _focus={{ color: "#319EF6" }} display="block">
         <Text fontSize="12px" color="#666" mb="10px" fontWeight="500">SUPPORTED CHAINS:</Text>

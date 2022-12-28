@@ -3,7 +3,8 @@
 import { Box, Flex } from '@chakra-ui/layout';
 import { Text,Img } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import DarkLogo from '../../assets/logo/LogoRGPImage.svg';
+// import DarkLogo from '../../assets/logo/LogoRGPImage.svg';
+import DarkLogo from '../../assets/logo/ChristmasRigelLogo.svg';
 import External from '../../assets/external.svg';
 import SmartSwap from '../../assets/smartswap-dark.svg';
 import Swap from '../../assets/swap.svg';
@@ -154,12 +155,12 @@ setMinNav2(!minNav2)
                 </a>
                </li>
                <li className='list'>
-               <a href="https://smartswap.rigelprotocol.com/#/auto-period" target="_blank">
+               <a href="https://smartswap.rigelprotocol.com/#/autotrade" target="_blank">
                 {/* <a
                 href="smartbid.html"
                 > */}
                  <div className="multi_navbar_ul_div_item">
-                   <p className="multi_nav_head">Auto Period</p>
+                   <p className="multi_nav_head">AutoTrade</p>
                   <div>
                    <p>Auto invests in any crypto of your choice</p>
                   </div>
@@ -180,7 +181,7 @@ setMinNav2(!minNav2)
                 </a>
                </li>
                <li className='list'>
-               <a  href="https://smartswap.rigelprotocol.com/#/farming-v2" target="_blank">
+               <a  href="https://smartswap.rigelprotocol.com/#/Farm-v2" target="_blank">
                  <div className="multi_navbar_ul_div_item">
                    <p className="multi_nav_head">Farms</p>
                   <div>
@@ -352,8 +353,8 @@ setMinNav3(!minNav3)
         
         <section className="section__3">
           <div className="section__3__heading">
-    <h2>Swap.Liquidity.Farming</h2>
-          <p>You have a wide range of functions to perfom with the SmartSwap, either swapping out tokens, providing liquidity or yield farming.</p>
+    <h2>Swap.Liquidity.Farm</h2>
+          <p>You have a wide range of functions to perfom with the SmartSwap, either swapping out tokens, providing liquidity or yield Farm.</p>
           </div>
          <div className="section__3__top">
           <div>
@@ -393,10 +394,10 @@ setMinNav3(!minNav3)
             <img src={YieldFarm} alt="" />
            </div>
            <div className="section__3__text">
-             <h3>Yield Farming</h3>
+             <h3>Yield Farm</h3>
              <p>When you trade with the leverage you earn more back. From your earning your leveraged tokens are automatically removed with interest and you get to keep more earnings.</p>
              <div className="section__3__top__button">
-               <Link to="/farming-V2">
+               <Link to="/Farm-V2">
                      <button className="button">
                  Launch DApp <span>&#8594;</span>
                </button>
@@ -469,8 +470,8 @@ setMinNav3(!minNav3)
        <div className='section__5__link'>
          <div>
            <h6>Swap</h6>
-           <p><Link to="/swap">Straight Swap</Link></p>
-           <p><Link to="/auto-period">Auto Time</Link></p>
+           <p><Link to="/swap">Swap</Link></p>
+           <p><Link to="/autotrade">Auto Time</Link></p>
            <p><Link to="/set-price">Set Price</Link></p>
          </div>
          <div>
@@ -480,9 +481,9 @@ setMinNav3(!minNav3)
            <p><Link to="/find">Import Liquidity Pool</Link></p>
          </div>
          <div>
-           <h6>Farming</h6>
-           <p><Link to="/farming-V2">Liquidity Pools</Link></p>
-           <p><Link to="/farming-V2/staking-RGP">Staking</Link></p>
+           <h6>Farm</h6>
+           <p><Link to="/Farm-V2">Liquidity Pools</Link></p>
+           <p><Link to="/Farm-V2/staking-RGP">Staking</Link></p>
            <p>Other Farms</p>
            <p><a href="" target="_blank">List your Project</a></p>
          </div>
@@ -545,24 +546,14 @@ setMinNav3(!minNav3)
 <ul>
  <li><a href="https://smartswap.rigelprotocol.com/" target="_blank">SmartSwap</a></li>
  <li><a href="https://gift.rigelprotocol.com/" target="_blank">Gift DApp</a> </li>
- <li> <a
-  data-toggle="tooltip"
-  data-placement="bottom"
-  title="coming soon"
-  href="#"
-  >Leverage Exchange
+ <li> <a href="https://smartswap.rigelprotocol.com/autotrade?chain=bsc" target="_blank"
+  >Autotrade
 </a></li>
  <li> <a
-  data-toggle="tooltip"
-  data-placement="bottom"
-  title="coming soon"
-  href="#"
+   target="_blank" href="https://smartswap.rigelprotocol.com/smartbid?chain=bsc"
   >SmartBid</a></li>
  <li><a
-  data-toggle="tooltip"
-  data-placement="bottom"
-  title="coming soon"
-  href="#">LaunchPad</a></li>
+  href="https://launchpad.rigelprotocol.com/"  target="_blank">LaunchPad</a></li>
 </ul>
 </div>
 <div>
@@ -587,6 +578,7 @@ setMinNav3(!minNav3)
  <li><a href="https://rigelprotocol.com/design-compliance.html" target="_blank">Design Compliance</a> </li>
  <li><a href="https://rigelprotocol.com/privacy-policy.html" target="_blank">Private Policy</a> </li>
  <li><a href="https://rigelprotocol.com/terms-and-condition.html" target="_blank">Terms & Conditions</a> </li>
+ <li><a href="https://rigelprotocol.com/AML" target="_blank">Anti-Money Laundering Policy</a> </li>
 </ul>
 </div>
         </div> 
